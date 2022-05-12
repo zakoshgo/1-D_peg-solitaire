@@ -25,7 +25,7 @@ class gameSolitaire
 
     ArrayList<Integer> myBoard; // this will contains my main board
     ArrayList<TheMovement> movementList; // to store the path of movement on it
-    ArrayList<ArrayList<Integer>> unsuccessfulPatterns;
+    ArrayList<ArrayList<Integer>> unsuccessfulPatterns; // stores the unsuccessful patterns later
     int numberofbits;// input by the user and checked in the main function to make sure it is evenNumber > 2
 
 
@@ -73,6 +73,13 @@ class gameSolitaire
         myBoard.set(theMovement.to,1);
         movementList.add(theMovement);
     }
+    private void undoMoveOrder(TheMovement theMovement) // undo the last move as it will not lead to sucsessful path
+    {                                                      //and return the pattern to its origin 110
+        myBoard.set(theMovement.from,1);
+        myBoard.set(theMovement.middle,1);
+        myBoard.set(theMovement.to,0);
+        movementList.remove(movementList.size()-1); // to remove the last value added
+    }
     private ArrayList getAvailableMoves() // this function is responsible for getting (all) the valid moves that
     {                                       // can be done in this call then store them in arraylist
         ArrayList<TheMovement> availableMoves = new ArrayList<>();
@@ -98,13 +105,7 @@ class gameSolitaire
         }
         return availableMoves;
     }
-    private void undoMoveOrder(TheMovement theMovement) // undo the last move as it will not lead to sucsessful path
-    {                                                      //and return the pattern to its origin 110
-        myBoard.set(theMovement.from,1);
-        myBoard.set(theMovement.middle,1);
-        myBoard.set(theMovement.to,0);
-        movementList.remove(movementList.size()-1); // to remove the last value added
-    }
+
     private ArrayList<Integer> copyArrayList(ArrayList<Integer> input) // copy arrayList into another
     {                                                                // used later to update the unsuccessful patterns arraylist
         ArrayList<Integer> newGrid = new ArrayList<>();
@@ -115,7 +116,7 @@ class gameSolitaire
         }
         return newGrid;
     }
-    public boolean checkSolution() // this is the core function
+    public boolean checkSolution() // this is the core method
     {
         if(unsuccessfulPatterns.contains(myBoard)) // check if the current pattern matches one of the
         {                                               //unsuccessful patterns stored
@@ -178,11 +179,15 @@ public class Main {
                 grid.add(in.nextInt());
             }
 
+
             if (new gameSolitaire(grid, numberofbits).checkSolution() == false){
                 System.out.println(grid);
                 System.out.println("unsolved");}
         }
         else System.out.println("number must be even > 2");
+
+
+
 
     }
 }
