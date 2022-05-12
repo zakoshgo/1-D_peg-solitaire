@@ -168,7 +168,7 @@ class gameSolitaire
 
 
 
-public class Main {
+public class dynamicProgramming {
     public static void main(String[] args) {
         ArrayList<Integer> grid = new ArrayList<>();
         Scanner in = new Scanner(System.in);
